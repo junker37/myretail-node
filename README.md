@@ -5,6 +5,8 @@ GET /products/v{version}/{id} - Returns product information, name from an intern
 
 PUT /products/v{version}/{id} - Updates pricing data for the given product id.  Updates the data in the key-value store (dynamodb in this case).
 
+This code uses the [Express JS framework](http://expressjs.com/) with [iojs](https://iojs.org/en/index.html)
+
 ## Testing
 Run the tests using mocha.  MongoDB needs to be running for the tests to complete successfully.
 
