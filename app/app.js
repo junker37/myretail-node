@@ -39,7 +39,8 @@ app.get('/products/v:version/:id', function (req, res) {
  */
 app.put('/products/v:version/:id', function (req, res) {
   try {
-    pricingAPI.updatePricingData(req.params.id, req.body)
+    var productId = parseInt(req.params.id);
+    pricingAPI.updatePricingData(productId, req.body)
       .then(function (result) {
         res.send();
       })
