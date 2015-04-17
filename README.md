@@ -1,13 +1,23 @@
 # myretail-node
-This code uses iojs.
+This code has a couple of endpoints.  One to get product info based on a product id, and another to updating pricing data for a product
+
+GET /products/v{version}/{id} - Returns product information, name from an internal APIl, and pricing data from a key-value store (dynamodb in this case).
+
+PUT /products/v{version}/{id} - Updates pricing data for the given product id.  Updates the data in the key-value store (dynamodb in this case).
 
 ## Testing
 Run the tests using mocha.  MongoDB needs to be running for the tests to complete successfully.
 
-## Start mongodb.
+## Start mongodb
+If using ubuntu 12.04, use the script below. Otherwise, manually start it with dbpath mongodb/data
 ```
-cd .mongodb
+cd ./mongodb
 ./start_mongo.sh
+```
+manually start mongo
+```
+cd ./mongodb
+mongod --dbpath ./data --smallfiles --nojournal
 ```
 ### Using iojs
 If you have node installed, you need to replace the symlink to point to iojs. See [this issue](https://github.com/mochajs/mocha/issues/1498)
@@ -45,4 +55,30 @@ You should see output like this
 
 
   2 passing (789ms)
+```
+
+## Running
+Make sure mongodb is running.  See Starting mongodb section above.
+
+Startup the webserver
+```
+./iojs-v1.6.4-linux-x64/bin/iojs app/app.js
+```
+Open a browser to http://localhost:3000/products/v1/13860428 or, use curl
+```
+curl http://localhost:3000/products/v1/13860428
+```
+Output
+```
+{"id":13860428,"name":"The Big Lebowski (Blu-ray) (Widescreen)","current_price":{"value":13.49,"currency_code":"USD"}}
+```
+
+#### Updating Pricing Data
+```
+curl -H "Content-Type: application/json" -X PUT -d '{"value":12.99,"currency_code":"USD"}' http://localhost:3000/products/v1/13860428
+curl http://localhost:3000/products/v1/13860428
+```
+Output
+```
+{"id":13860428,"name":"The Big Lebowski (Blu-ray) (Widescreen)","current_price":{"value":12.99,"currency_code":"USD"}}
 ```
