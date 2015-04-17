@@ -6,6 +6,11 @@ app.use(bodyParser.json());
 var infoAPI = require('../lib/product_info_api.js');
 var pricingAPI = require('../lib/pricing_api.js');
 
+/**
+ * Gets product data
+ *
+ * {"id":13860428,"name":"The Big Lebowski (Blu-ray) (Widescreen)","current_price":{"value":13.49,"currency_code":"USD"}}
+ */
 app.get('/products/v:version/:id', function (req, res) {
   var productId = parseInt(req.params.id);
   Promise.all([infoAPI.getProductName(productId), pricingAPI.getPricingData(productId)])
@@ -29,6 +34,9 @@ app.get('/products/v:version/:id', function (req, res) {
     });
 });
 
+/**
+ * Updates pricing data
+ */
 app.put('/products/v:version/:id', function (req, res) {
   try {
     pricingAPI.updatePricingData(req.params.id, req.body)
